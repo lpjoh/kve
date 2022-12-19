@@ -1,6 +1,7 @@
 #pragma once
 #include "GraphicsBuffer.h"
 #include "ShaderProgram.h"
+#include "Texture.h"
 
 namespace kve {
 	class Mesh {
@@ -14,9 +15,11 @@ namespace kve {
 		IndexBuffer indexBuffer;
 
 		void Load();
-		void Render(ShaderProgram* shaderProgram);
+		void Clear();
 
 		void Start();
 		~Mesh();
+
+		void Render(ShaderProgram* shaderProgram, Texture* texture);
 	};
 }

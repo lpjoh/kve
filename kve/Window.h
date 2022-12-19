@@ -1,7 +1,7 @@
 #pragma once
 
 #ifdef KVE_GL
-#include <GLFW/glfw3.h>
+#include <SDL2/SDL.h>
 #endif
 
 #include <string>
@@ -10,7 +10,8 @@ namespace kve {
 	class Window {
 #ifdef KVE_GL
 	private:
-		GLFWwindow* glfwWindow;
+		SDL_Window* sdlWindow;
+		SDL_GLContext sdlGlContext;
 #endif
 
 	public:

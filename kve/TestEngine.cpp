@@ -5,37 +5,41 @@ using namespace kve;
 bool TestEngine::GameStart() {
 	renderer.backgroundColor = { 0.0f, 0.0f, 0.5f, 1.0f };
 
-	VertexShader vertexShader("vertex.glsl");
-	FragmentShader fragmentShader("fragment.glsl");
+	texture1.Start();
+	texture1.Load("assets/textures/test1.png");
 
-	shaderProgram.Start();
+	texture2.Start();
+	texture2.Load("assets/textures/test2.png");
 
-	shaderProgram.Attach(&vertexShader);
-	shaderProgram.Attach(&fragmentShader);
+	SpriteBatch::StartStatic();
+	spriteBatch.Start();
 
-	shaderProgram.Link();
+	textureID1 = spriteBatch.AddTexture(&texture1);
+	textureID2 = spriteBatch.AddTexture(&texture2);
 	
-	mesh.Start();
-
-	auto& vertices = mesh.vertexBuffer.vertices;
-
-	vertices.push_back({ { 0.5f,  0.5f, 0.0f } });
-	vertices.push_back({ { 0.5f, -0.5f, 0.0f } });
-	vertices.push_back({ { -0.5f, -0.5f, 0.0f } });
-	vertices.push_back({ { -0.5f,  0.5f, 0.0f } });
-
-	IndexBuffer indexBuffer;
-
-	auto& indices = mesh.indexBuffer.indices;
-
-	indices.push_back({ 0, 1, 3 });
-	indices.push_back({ 1, 2, 3 });
-
-	mesh.Load();
-
 	return true;
 }
 
 void TestEngine::GameRender() {
-	mesh.Render(&shaderProgram);
+	static float time = 0.0f;
+
+	spriteBatch.DrawSprite(textureID1,
+		{ time, time }, { 0.5f, 0.5f },
+		{ 0.0f, 0.0f }, { 1.0f, 1.0f });
+
+	spriteBatch.DrawSprite(textureID2,
+		{ -time, time }, { 0.5f, 0.5f },
+		{ 0.0f, 0.0f }, { 1.0f, 1.0f });
+
+	spriteBatch.DrawSprite(textureID1,
+		{ -time, -time }, { 0.5f, 0.5f },
+		{ 0.0f, 0.0f }, { 1.0f, 1.0f });
+
+	spriteBatch.DrawSprite(textureID2,
+		{ time, -time }, { 0.5f, 0.5f },
+		{ 0.0f, 0.0f }, { 1.0f, 1.0f });
+	
+	spriteBatch.Render();
+
+	time += 0.001f;
 }

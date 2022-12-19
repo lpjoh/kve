@@ -5,19 +5,6 @@
 
 using namespace kve;
 
-void Mesh::Render(ShaderProgram* shaderProgram) {
-	glBindVertexArray(glVertexArray);
-
-	vertexBuffer.Bind();
-	indexBuffer.Bind();
-
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), (void*)0);
-	glEnableVertexAttribArray(0);
-
-	shaderProgram->Use();
-	glDrawElements(GL_TRIANGLES, indexBuffer.indices.size() * 3, GL_UNSIGNED_INT, 0);
-}
-
 void Mesh::Start() {
 	glGenVertexArrays(1, &glVertexArray);
 
@@ -27,6 +14,28 @@ void Mesh::Start() {
 
 Mesh::~Mesh() {
 	glDeleteVertexArrays(1, &glVertexArray);
+}
+
+void Mesh::Render(ShaderProgram* shaderProgram, Texture* texture) {
+	glBindVertexArray(glVertexArray);
+
+	vertexBuffer.Bind();
+	indexBuffer.Bind();
+
+	// Position
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, position));
+	glEnableVertexAttribArray(0);
+
+	// UV
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, uv));
+	glEnableVertexAttribArray(1);
+
+	glActiveTexture(GL_TEXTURE0);
+	texture->Bind();
+
+	shaderProgram->Use();
+
+	glDrawElements(GL_TRIANGLES, indexBuffer.indices.size() * 3, GL_UNSIGNED_INT, 0);
 }
 
 #endif

@@ -1,13 +1,15 @@
 #pragma once
 #include "Engine.h"
-#include "ShaderProgram.h"
-#include "Mesh.h"
+#include "SpriteBatch.h"
+#include "Texture.h"
 
 namespace kve {
 	class TestEngine : public Engine {
 	private:
-		Mesh mesh;
-		ShaderProgram shaderProgram;
+		SpriteBatch spriteBatch;
+
+		Texture texture1, texture2;
+		int textureID1, textureID2;
 
 	public:
 		bool GameStart() override;

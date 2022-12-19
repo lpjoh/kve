@@ -15,6 +15,7 @@ namespace kve {
 
 	struct Vertex {
 		glm::vec3 position;
+		glm::vec2 uv;
 	};
 
 	class VertexBuffer : public GraphicsBuffer {
