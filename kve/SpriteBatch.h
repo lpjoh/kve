@@ -28,6 +28,6 @@ namespace kve {
 		void Start();
 		static void StartStatic();
 		
-		void Render();
+		void Render(glm::mat4 transform = glm::mat4(1));
 	};
 }

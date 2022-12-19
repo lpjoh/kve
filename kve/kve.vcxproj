@@ -158,7 +158,7 @@
     <ClCompile Include="SpriteBatch.cpp" />
     <ClCompile Include="TestEngine.cpp" />
     <ClCompile Include="Texture_GLEW.cpp" />
-    <ClCompile Include="Window_GL_SDL.cpp" />
+    <ClCompile Include="Window_SDL_GL.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

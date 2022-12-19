@@ -31,7 +31,7 @@ void Engine::Render() {
 }
 
 bool Engine::Start() {
-	if (!window.Start(640, 480, "Title")) {
+	if (!window.Start(GetWindowProperties())) {
 		return false;
 	}
 

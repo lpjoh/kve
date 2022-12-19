@@ -3,9 +3,17 @@
 #include "ShaderProgram.h"
 #include <iostream>
 #include <GL/glew.h>
+#include <glm/gtc/type_ptr.hpp>
 #include "GL.h"
 
 using namespace kve;
+
+void ShaderProgram::SetTransform(std::string name, glm::mat4 transform) {
+	Use();
+
+	int uniformLocation = glGetUniformLocation(glShaderProgram, name.c_str());
+	glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(transform));
+}
 
 void ShaderProgram::Attach(Shader* shader) {
 	glAttachShader(glShaderProgram, shader->glShader);

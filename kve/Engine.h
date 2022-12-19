@@ -13,6 +13,8 @@ namespace kve {
 		Window window;
 		Renderer renderer;
 
+		virtual WindowProperties GetWindowProperties() { return WindowProperties(); }
+
 		bool Start();
 
 		virtual bool GameStart() { return true; }

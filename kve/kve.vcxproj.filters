@@ -68,7 +68,7 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Window_GL_SDL.cpp">
+    <ClCompile Include="Window_SDL_GL.cpp">
       <Filter>Source Files\gl</Filter>
     </ClCompile>
     <ClCompile Include="Renderer_GLEW.cpp">

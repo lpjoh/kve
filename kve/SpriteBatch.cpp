@@ -35,7 +35,7 @@ void SpriteBatch::StartStatic() {
 	shaderProgram.Link();
 }
 
-void SpriteBatch::Render() {
+void SpriteBatch::Render(glm::mat4 transform) {
 	auto& indices = mesh.indexBuffer.indices;
 	auto& vertices = mesh.vertexBuffer.vertices;
 
@@ -49,20 +49,22 @@ void SpriteBatch::Render() {
 			glm::vec2 srcStart = bs.srcPosition;
 			glm::vec2 srcEnd = srcStart + bs.srcSize;
 
+			float depth = 0.0f;
+
 			vertices.push_back({
-				{ start.x, start.y, 0.0f },
+				{ start.x, start.y, depth },
 				{ srcStart.x, srcStart.y } });
 
 			vertices.push_back({
-				{ end.x, start.y, 0.0f },
+				{ end.x, start.y, depth },
 				{ srcEnd.x, srcStart.y } });
 
 			vertices.push_back({
-				{ start.x, end.y, 0.0f },
+				{ start.x, end.y, depth },
 				{ srcStart.x, srcEnd.y } });
 
 			vertices.push_back({
-				{ end.x, end.y, 0.0f },
+				{ end.x, end.y, depth },
 				{ srcEnd.x, srcEnd.y } });
 
 			int first_index = vertices.size() - 4;
@@ -74,7 +76,7 @@ void SpriteBatch::Render() {
 				{ first_index + 1, first_index + 2, first_index + 3 });
 
 			mesh.Load();
-			mesh.Render(&shaderProgram, textures[textureID]);
+			mesh.Render(&shaderProgram, textures[textureID], transform);
 
 			mesh.Clear();
 		}

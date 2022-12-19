@@ -1,4 +1,5 @@
 #pragma once
+#include <glm/glm.hpp>
 #include "Shader.h"
 
 namespace kve {
@@ -9,6 +10,8 @@ namespace kve {
 #endif
 
 	public:
+		void SetTransform(std::string name, glm::mat4 transform);
+
 		void Attach(Shader* shader);
 		bool Link();
 		void Use();

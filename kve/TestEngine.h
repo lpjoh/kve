@@ -12,6 +12,8 @@ namespace kve {
 		int textureID1, textureID2;
 
 	public:
+		WindowProperties GetWindowProperties() override;
+
 		bool GameStart() override;
 		void GameRender() override;
 	};

@@ -1,6 +1,11 @@
 #include "TestEngine.h"
+#include <glm/gtc/matrix_transform.hpp>
 
 using namespace kve;
+
+WindowProperties TestEngine::GetWindowProperties() {
+	return { 640, 480, "Test engine", true };
+}
 
 bool TestEngine::GameStart() {
 	renderer.backgroundColor = { 0.0f, 0.0f, 0.5f, 1.0f };
@@ -23,23 +28,25 @@ bool TestEngine::GameStart() {
 void TestEngine::GameRender() {
 	static float time = 0.0f;
 
+	const glm::vec2 spriteSize = glm::vec2(32.0f, 32.0f) * 2.0f;
+
 	spriteBatch.DrawSprite(textureID1,
-		{ time, time }, { 0.5f, 0.5f },
+		{ time, time }, spriteSize,
 		{ 0.0f, 0.0f }, { 1.0f, 1.0f });
 
 	spriteBatch.DrawSprite(textureID2,
-		{ -time, time }, { 0.5f, 0.5f },
+		{ -time, time }, spriteSize,
 		{ 0.0f, 0.0f }, { 1.0f, 1.0f });
 
 	spriteBatch.DrawSprite(textureID1,
-		{ -time, -time }, { 0.5f, 0.5f },
+		{ -time, -time }, spriteSize,
 		{ 0.0f, 0.0f }, { 1.0f, 1.0f });
 
 	spriteBatch.DrawSprite(textureID2,
-		{ time, -time }, { 0.5f, 0.5f },
+		{ time, -time }, spriteSize,
 		{ 0.0f, 0.0f }, { 1.0f, 1.0f });
 	
-	spriteBatch.Render();
+	spriteBatch.Render(window.GetOrthoTransform());
 
-	time += 0.001f;
+	time += 0.1f;
 }
