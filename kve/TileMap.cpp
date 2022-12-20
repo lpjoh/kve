@@ -161,7 +161,7 @@ bool TileMap::LoadTMX(const std::string filePath) {
 		const std::string csvName = "csv";
 
 		if (std::string(layerDataNode->first_attribute("encoding")->value()) != csvName) {
-			std::cerr << "Map at \"" + filePath + "\" did not use CSV encoding.";
+			std::cerr << "Map file at \"" + filePath + "\" did not use CSV encoding.";
 			return false;
 		}
 
@@ -190,7 +190,7 @@ void TileMap::Render(SpriteBatch& spriteBatch) {
 				TileSet* tileSet = nullptr;
 
 				for (int i = tileSets.size() - 1; i >= 0; i--) {
-					TileSet& testTileSet = tileSets[i];
+					TileSet& testTileSet = tileSets.at(i);
 
 					if (cell >= testTileSet.firstGlobalID) {
 						tileSet = &testTileSet;

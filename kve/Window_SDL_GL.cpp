@@ -2,6 +2,7 @@
 
 #include "Window.h"
 #include <iostream>
+#include <algorithm>
 #include <GL/glew.h>
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -13,6 +14,21 @@ int Window::GetWidth() {
 
 int Window::GetHeight() {
     return properties.height;
+}
+
+void Window::Sleep() {
+    int updateTime = SDL_GetTicks() - lastTicks;
+
+    unsigned int waitTime =
+        std::max(0, frameTime - updateTime);
+
+    SDL_Delay(waitTime);
+
+    deltaTime = (float)(SDL_GetTicks() - lastTicks) / 1000.0f;
+}
+
+float Window::GetDeltaTime() {
+    return deltaTime;
 }
 
 void Window::Resize(int width, int height) {
@@ -42,6 +58,8 @@ bool Window::Start(WindowProperties properties) {
         sdlWindowFlags |= SDL_WINDOW_RESIZABLE;
     }
 
+    frameTime = (int)(1000.0f / properties.fps);
+
     sdlWindow = SDL_CreateWindow(
         properties.title.c_str(),
         SDL_WINDOWPOS_CENTERED,
@@ -55,10 +73,7 @@ bool Window::Start(WindowProperties properties) {
         return false;
     }
 
-    if( SDL_GL_SetSwapInterval( 1 ) < 0 ) {
-        std::cerr << "Failed to initialize vsync." << std::endl;
-        return false;
-    }
+    SDL_GL_SetSwapInterval(0);
 
     this->properties = properties;
 
@@ -73,6 +88,8 @@ void Window::End() {
 }
 
 bool Window::Update() {
+    lastTicks = SDL_GetTicks();
+
     SDL_Event event;
 
     while (SDL_PollEvent(&event)) {

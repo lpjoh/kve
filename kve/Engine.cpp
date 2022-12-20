@@ -13,11 +13,13 @@ bool Engine::Update() {
 		return false;
 	}
 
-	if (!GameUpdate(1.0f)) {
+	if (!GameUpdate(window.GetDeltaTime())) {
 		return false;
 	}
 
 	Render();
+
+	window.Sleep();
 
 	return true;
 }

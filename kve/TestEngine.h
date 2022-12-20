@@ -16,6 +16,7 @@ namespace kve {
 		WindowProperties GetWindowProperties() override;
 
 		bool GameStart() override;
+		bool GameUpdate(float delta) override;
 		void GameRender() override;
 	};
 }

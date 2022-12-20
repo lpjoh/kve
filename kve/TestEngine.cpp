@@ -1,4 +1,5 @@
 #include "TestEngine.h"
+#include <iostream>
 #include <glm/gtc/matrix_transform.hpp>
 #include "Assets.h"
 #include "TileMap.h"
@@ -6,7 +7,7 @@
 using namespace kve;
 
 WindowProperties TestEngine::GetWindowProperties() {
-	return { 640, 480, "Test engine", true };
+	return { 640, 480, "Test engine", true, 60.0f };
 }
 
 bool TestEngine::GameStart() {
@@ -24,6 +25,12 @@ bool TestEngine::GameStart() {
 	spriteBatch.AddTexture(texture3);
 
 	tileMap.LoadTMX("assets/maps/test.tmx");
+	
+	return true;
+}
+
+bool TestEngine::GameUpdate(float delta) {
+	std::cout << delta << std::endl;
 	
 	return true;
 }

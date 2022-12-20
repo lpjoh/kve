@@ -13,6 +13,8 @@ namespace kve {
 		int width = 640, height = 480;
 		std::string title = "KVE Window";
 		bool resizeable = false;
+
+		float fps = 60.0f;
 	};
 
 	class Window {
@@ -20,15 +22,24 @@ namespace kve {
 	private:
 		SDL_Window* sdlWindow;
 		SDL_GLContext sdlGlContext;
+
+		unsigned int lastTicks;
+		int frameTime;
+
+		float deltaTime;
 #endif
 
 	private:
 		WindowProperties properties;
+
 		void Resize(int width, int height);
 
 	public:
 		int GetWidth();
 		int GetHeight();
+
+		void Sleep();
+		float GetDeltaTime();
 
 		glm::mat4 GetOrthoTransform();
 
