@@ -1,33 +1,12 @@
 #include "SpriteBatch.h"
-
-#ifdef KVE_DEBUG
-#include <iostream>
-#endif
+#include <unordered_map>
 
 using namespace kve;
 
 ShaderProgram SpriteBatch::shaderProgram;
 
-void SpriteBatch::AddTexture(Texture* texture) {
-	batchedSprites.emplace(texture, std::vector<BatchedSprite>());
-}
-
-void SpriteBatch::DrawSprite(Texture* texture,
-	glm::vec2 position, glm::vec2 size,
-	glm::vec2 srcPosition, glm::vec2 srcSize) {
-	
-#ifdef KVE_DEBUG
-	if (batchedSprites.find(texture) == batchedSprites.end()) {
-		std::cerr << 
-			"Sprite drawn with texture at \"" <<
-			texture->GetImagePath() <<
-			"\", which was not added to the batch." << std::endl;
-		exit(-1);
-	}
-#endif
-
-	batchedSprites.at(texture).push_back(
-		{ position, size, srcPosition, srcSize });
+void SpriteBatch::DrawSprite(BatchedSprite batchedSprite) {
+	batchedSprites.push_back(batchedSprite);
 }
 
 void SpriteBatch::Start() {
@@ -50,10 +29,21 @@ void SpriteBatch::Render(glm::mat4 transform) {
 	auto& indices = mesh.indexBuffer.indices;
 	auto& vertices = mesh.vertexBuffer.vertices;
 
-	for (auto& textureBatchPair : batchedSprites) {
+	static std::unordered_map<Texture*, std::vector<BatchedSprite>> spriteTextureMap;
+	spriteTextureMap.clear();
+
+	for (BatchedSprite& batchedSprite : batchedSprites) {
+		if (spriteTextureMap.find(batchedSprite.texture) == spriteTextureMap.end()) {
+			spriteTextureMap.emplace(batchedSprite.texture, std::vector<BatchedSprite>());
+		}
+
+		spriteTextureMap.at(batchedSprite.texture).push_back(batchedSprite);
+	}
+
+	for (auto& textureBatchPair : spriteTextureMap) {
 		// A texture and its corresponding sprites
 		Texture* texture = textureBatchPair.first;
-		std::vector<BatchedSprite>& batchedSpriteList = batchedSprites.at(texture);
+		std::vector<BatchedSprite>& batchedSpriteList = spriteTextureMap.at(texture);
 		
 		for (BatchedSprite& batchedSprite : batchedSpriteList) {
 			// Find points
@@ -96,7 +86,7 @@ void SpriteBatch::Render(glm::mat4 transform) {
 		mesh.Load();
 		mesh.Render(&shaderProgram, texture, transform);
 		mesh.Clear();
-
-		batchedSpriteList.clear();
 	}
+
+	batchedSprites.clear();
 }

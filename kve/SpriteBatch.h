@@ -1,5 +1,4 @@
 #pragma once
-#include <unordered_map>
 #include <vector>
 #include <glm/glm.hpp>
 #include "Mesh.h"
@@ -7,6 +6,7 @@
 
 namespace kve {
 	struct BatchedSprite {
+		Texture* texture;
 		glm::vec2 position, size, srcPosition, srcSize;
 	};
 
@@ -15,14 +15,10 @@ namespace kve {
 		Mesh mesh;
 		static ShaderProgram shaderProgram;
 
-		std::unordered_map<Texture*, std::vector<BatchedSprite>> batchedSprites;
+		std::vector<BatchedSprite> batchedSprites;
 
 	public:
-		void AddTexture(Texture* texture);
-
-		void DrawSprite(Texture* texture,
-			glm::vec2 position, glm::vec2 size,
-			glm::vec2 srcPosition, glm::vec2 srcSize);
+		void DrawSprite(BatchedSprite batchedSprite);
 		
 		void Start();
 		static void StartStatic();

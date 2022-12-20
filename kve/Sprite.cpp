@@ -33,5 +33,5 @@ void Sprite::Render(SpriteBatch& spriteBatch) {
 		return;
 	}
 	
-	spriteBatch.DrawSprite(texture, position, size, srcPosition, srcSize);
+	spriteBatch.DrawSprite({ texture, position, size, srcPosition, srcSize });
 }

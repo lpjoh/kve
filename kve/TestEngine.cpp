@@ -16,14 +16,6 @@ bool TestEngine::GameStart() {
 	SpriteBatch::StartStatic();
 	spriteBatch.Start();
 
-	Texture* texture1 = Assets::LoadTexture("assets/textures/test.png");
-	Texture* texture2 = Assets::LoadTexture("assets/textures/test2.png");
-	Texture* texture3 = Assets::LoadTexture("assets/textures/test3.png");
-
-	spriteBatch.AddTexture(texture1);
-	spriteBatch.AddTexture(texture2);
-	spriteBatch.AddTexture(texture3);
-
 	tileMap.LoadTMX("assets/maps/test.tmx");
 	
 	return true;

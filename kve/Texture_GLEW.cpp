@@ -7,7 +7,7 @@
 
 using namespace kve;
 
-bool Texture::LoadImage(const std::string imagePath) {
+bool Texture::Load(const std::string imagePath) {
 	SDL_Surface* imageSurface = IMG_Load(imagePath.c_str());
 
 	if (imageSurface == nullptr) {
