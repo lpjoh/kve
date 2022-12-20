@@ -10,7 +10,7 @@ WindowProperties TestEngine::GetWindowProperties() {
 }
 
 RendererProperties TestEngine::GetRendererProperties() {
-	return { 640, 360 };
+	return { 320, 180 };
 }
 
 bool TestEngine::GameStart() {

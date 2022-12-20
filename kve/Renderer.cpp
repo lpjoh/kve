@@ -52,18 +52,18 @@ bool Renderer::Start(RendererProperties properties) {
 }
 
 void Renderer::Render() {
-	frameBuffer.Bind();
+	// Draw game to framebuffer
 	frameBuffer.PreRender();
 
 	Clear(backgroundColor);
 	engine->GameRender();
 
+	// Draw framebuffer to screen
 	FrameBuffer::Unbind();
-
 	engine->window.PreRender();
 
 	shaderProgram.Use();
 
 	frameMesh.Render(
-		&shaderProgram, &frameBuffer.texture, engine->window.GetFrameTransform());
+		&shaderProgram, frameBuffer.GetTexture(), engine->window.GetFrameTransform());
 }

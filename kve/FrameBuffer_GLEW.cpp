@@ -6,6 +6,10 @@
 
 using namespace kve;
 
+void FrameBuffer::PreRenderGraphics() {
+	glViewport(0, 0, width, height);
+}
+
 void FrameBuffer::Bind() {
 	glBindFramebuffer(GL_FRAMEBUFFER, glFrameBuffer);
 	glBindRenderbuffer(GL_RENDERBUFFER, glRenderBuffer);
@@ -40,10 +44,6 @@ void FrameBuffer::Start(int width, int height) {
 FrameBuffer::~FrameBuffer() {
 	glDeleteRenderbuffers(1, &glRenderBuffer);
 	glDeleteFramebuffers(1, &glFrameBuffer);
-}
-
-void FrameBuffer::PreRender() {
-	glViewport(0, 0, width, height);
 }
 
 #endif

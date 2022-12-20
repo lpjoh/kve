@@ -11,9 +11,11 @@ namespace kve {
 	private:
 		Texture texture;
 
-		friend class Renderer;
+		void PreRenderGraphics();
 
 	public:
+		Texture* GetTexture();
+
 		void Bind();
 		static void Unbind();
 

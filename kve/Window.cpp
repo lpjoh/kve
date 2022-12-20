@@ -8,6 +8,7 @@ void Window::UpdateFrameTransform() {
 	float windowAspectRatio = (float)properties.width / (float)properties.height;
 
 	RendererProperties rendererProperties = engine->renderer.GetProperties();
+
 	float frameAspectRatio = 
 		(float)rendererProperties.frameWidth / (float)rendererProperties.frameHeight;
 
