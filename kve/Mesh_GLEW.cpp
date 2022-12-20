@@ -38,6 +38,8 @@ void Mesh::Render(ShaderProgram* shaderProgram, Texture* texture, glm::mat4 tran
 	shaderProgram->Use();
 
 	glDrawElements(GL_TRIANGLES, indexBuffer.indices.size() * 3, GL_UNSIGNED_INT, 0);
+
+	Texture::Unbind();
 }
 
 #endif

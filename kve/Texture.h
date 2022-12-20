@@ -3,12 +3,14 @@
 
 namespace kve {
 	class Texture {
-	private:
 #ifdef KVE_GL
+	private:
 		unsigned int glTexture;
 #endif
-
+	private:
 		int width = 0, height = 0;
+
+		friend class FrameBuffer;
 
 	public:
 		int hFrames = 1, vFrames = 1;
@@ -17,9 +19,12 @@ namespace kve {
 		int GetHeight();
 
 		void Bind();
-		bool Load(const std::string imagePath);
+		static void Unbind();
 
-		Texture();
+		bool Load(const std::string imagePath);
+		void Create(int width, int height);
+
+		void Start();
 		~Texture();
 	};
 }

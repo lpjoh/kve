@@ -14,6 +14,7 @@ namespace kve {
 
 	public:
 		WindowProperties GetWindowProperties() override;
+		RendererProperties GetRendererProperties() override;
 
 		bool GameStart() override;
 		bool GameUpdate(float delta) override;

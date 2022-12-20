@@ -1,12 +1,11 @@
 #pragma once
 
 #include <string>
+#include <glm/glm.hpp>
 
 #ifdef KVE_GL
 #include <SDL2/SDL.h>
 #endif
-
-#include <glm/glm.hpp>
 
 namespace kve {
 	struct WindowProperties {
@@ -16,6 +15,8 @@ namespace kve {
 
 		float fps = 60.0f;
 	};
+
+	class Engine;
 
 	class Window {
 #ifdef KVE_GL
@@ -31,21 +32,31 @@ namespace kve {
 
 	private:
 		WindowProperties properties;
+		glm::mat4 frameTransform;
+
+		void UpdateFrameTransform();
 
 		void Resize(int width, int height);
+		void GraphicsResize(int width, int height);
+
+		bool StartGraphics();
+
+		Engine* engine;
+		friend class Engine;
 
 	public:
-		int GetWidth();
-		int GetHeight();
+		WindowProperties GetProperties();
+
+		glm::mat4 GetFrameTransform();
 
 		void Sleep();
 		float GetDeltaTime();
 
-		glm::mat4 GetOrthoTransform();
-
 		bool Start(WindowProperties properties);
 		void End();
 		bool Update();
+
+		void PreRender();
 		void Render();
 	};
 }

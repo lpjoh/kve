@@ -3,7 +3,7 @@
 
 using namespace kve;
 
-std::unordered_map<std::string, Texture> Assets::textures;
+std::unordered_map<std::string, Texture*> Assets::textures;
 
 Texture* Assets::LoadTexture(const std::string imagePath) {
 	// Get canonical image path, for finding duplicates
@@ -14,11 +14,26 @@ Texture* Assets::LoadTexture(const std::string imagePath) {
 
 	if (textures.find(canonImagePath) == textures.end()) {
 		// Texture does not exist, load
-		textures.emplace(canonImagePath, Texture());
-		Texture& texture = textures.at(canonImagePath);
+		Texture* texture = new Texture;
+		textures.emplace(canonImagePath, texture);
 
-		texture.Load(canonImagePath);
+		texture->Start();
+		texture->Load(canonImagePath);
 	}
 
-	return &textures.at(canonImagePath);
+	return textures.at(canonImagePath);
+}
+
+void Assets::ClearTextures() {
+	for (auto& nameTexturePair : textures) {
+		Texture* texture = nameTexturePair.second;
+
+		delete texture;
+	}
+
+	textures.clear();
+}
+
+void Assets::End() {
+	ClearTextures();
 }

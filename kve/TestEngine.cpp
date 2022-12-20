@@ -1,6 +1,5 @@
 #include "TestEngine.h"
 #include <iostream>
-#include <glm/gtc/matrix_transform.hpp>
 #include "Assets.h"
 #include "TileMap.h"
 
@@ -8,6 +7,10 @@ using namespace kve;
 
 WindowProperties TestEngine::GetWindowProperties() {
 	return { 640, 480, "Test engine", true, 60.0f };
+}
+
+RendererProperties TestEngine::GetRendererProperties() {
+	return { 640, 360 };
 }
 
 bool TestEngine::GameStart() {
@@ -23,11 +26,11 @@ bool TestEngine::GameStart() {
 
 bool TestEngine::GameUpdate(float delta) {
 	std::cout << delta << std::endl;
-	
+
 	return true;
 }
 
 void TestEngine::GameRender() {
 	tileMap.Render(spriteBatch);
-	spriteBatch.Render(window.GetOrthoTransform());
+	spriteBatch.Render(renderer.GetViewTransform());
 }

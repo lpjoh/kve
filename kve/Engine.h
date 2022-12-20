@@ -14,6 +14,7 @@ namespace kve {
 		Renderer renderer;
 
 		virtual WindowProperties GetWindowProperties() { return WindowProperties(); }
+		virtual RendererProperties GetRendererProperties() { return RendererProperties(); }
 
 		bool Start();
 

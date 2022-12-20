@@ -1,10 +1,12 @@
 #include "Engine.h"
+#include "Assets.h"
 
 using namespace kve;
 
 void Engine::End() {
 	GameEnd();
 
+	Assets::End();
 	window.End();
 }
 
@@ -25,21 +27,23 @@ bool Engine::Update() {
 }
 
 void Engine::Render() {
-	renderer.Clear();
-
-	GameRender();
-
+	renderer.Render();
 	window.Render();
 }
 
 bool Engine::Start() {
+	window.engine = this;
+	renderer.engine = this;
+
 	if (!window.Start(GetWindowProperties())) {
 		return false;
 	}
 
-	if (!renderer.Start()) {
+	if (!renderer.Start(GetRendererProperties())) {
 		return false;
 	}
+
+	window.UpdateFrameTransform();
 
 	GameStart();
 

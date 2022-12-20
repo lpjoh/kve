@@ -7,6 +7,14 @@
 
 using namespace kve;
 
+void Texture::Bind() {
+	glBindTexture(GL_TEXTURE_2D, glTexture);
+}
+
+void Texture::Unbind() {
+	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
 bool Texture::Load(const std::string imagePath) {
 	SDL_Surface* imageSurface = IMG_Load(imagePath.c_str());
 
@@ -17,25 +25,33 @@ bool Texture::Load(const std::string imagePath) {
 
 	Bind();
 
+	width = imageSurface->w;
+	height = imageSurface->h;
+
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-	width = imageSurface->w;
-	height = imageSurface->h;
-
-	glTexImage2D(GL_TEXTURE_2D, 0, 3, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, imageSurface->pixels);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, imageSurface->pixels);
 	glGenerateMipmap(GL_TEXTURE_2D);
 
 	SDL_FreeSurface(imageSurface);
 }
 
-void kve::Texture::Bind() {
-	glBindTexture(GL_TEXTURE_2D, glTexture);
+void Texture::Create(int width, int height) {
+	Bind();
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+
+	this->width = width;
+	this->height = height;
 }
 
-Texture::Texture() {
+void Texture::Start() {
 	glGenTextures(1, &glTexture);
 }
 

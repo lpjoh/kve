@@ -6,9 +6,9 @@
 
 using namespace kve;
 
-bool Renderer::Start() {
+bool Renderer::StartGraphics() {
 	GLenum glewError = glewInit();
-	
+
 	if (glewError != GLEW_OK) {
 		std::cerr << "Failed to init GLEW. Error:\n" << glewGetErrorString(glewError) << std::endl;
 		return false;
@@ -17,13 +17,13 @@ bool Renderer::Start() {
 	return true;
 }
 
-void Renderer::Clear() {
+void Renderer::Clear(glm::vec4 color) {
 	glClearColor(
-		backgroundColor.r,
-		backgroundColor.g,
-		backgroundColor.b,
-		backgroundColor.a);
-	
+		color.r,
+		color.g,
+		color.b,
+		color.a);
+
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 

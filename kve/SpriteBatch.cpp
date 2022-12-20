@@ -26,9 +26,6 @@ void SpriteBatch::StartStatic() {
 }
 
 void SpriteBatch::Render(glm::mat4 transform) {
-	auto& indices = mesh.indexBuffer.indices;
-	auto& vertices = mesh.vertexBuffer.vertices;
-
 	static std::unordered_map<Texture*, std::vector<BatchedSprite>> spriteTextureMap;
 	spriteTextureMap.clear();
 
@@ -53,33 +50,9 @@ void SpriteBatch::Render(glm::mat4 transform) {
 			glm::vec2 srcStart = batchedSprite.srcPosition;
 			glm::vec2 srcEnd = srcStart + batchedSprite.srcSize;
 
-			// Create vertices
 			float depth = 0.0f;
 
-			vertices.push_back({
-				{ start.x, start.y, depth },
-				{ srcStart.x, srcStart.y } });
-
-			vertices.push_back({
-				{ end.x, start.y, depth },
-				{ srcEnd.x, srcStart.y } });
-
-			vertices.push_back({
-				{ start.x, end.y, depth },
-				{ srcStart.x, srcEnd.y } });
-
-			vertices.push_back({
-				{ end.x, end.y, depth },
-				{ srcEnd.x, srcEnd.y } });
-
-			// Create indices
-			int first_index = vertices.size() - 4;
-
-			indices.push_back(
-				{ first_index, first_index + 1, first_index + 2 });
-
-			indices.push_back(
-				{ first_index + 1, first_index + 2, first_index + 3 });
+			mesh.CreateQuad(glm::vec3(start, depth), glm::vec3(end, depth), srcStart, srcEnd);
 		}
 
 		// Render and reset

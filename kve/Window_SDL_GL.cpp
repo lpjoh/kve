@@ -4,16 +4,11 @@
 #include <iostream>
 #include <algorithm>
 #include <GL/glew.h>
-#include <glm/gtc/matrix_transform.hpp>
 
 using namespace kve;
 
-int Window::GetWidth() {
-    return properties.width;
-}
-
-int Window::GetHeight() {
-    return properties.height;
+void Window::GraphicsResize(int width, int height) {
+    glViewport(0, 0, width, height);
 }
 
 void Window::Sleep() {
@@ -31,18 +26,7 @@ float Window::GetDeltaTime() {
     return deltaTime;
 }
 
-void Window::Resize(int width, int height) {
-    properties.width = width;
-    properties.height = height;
-
-    glViewport(0, 0, width, height);
-}
-
-glm::mat4 Window::GetOrthoTransform() {
-    return glm::ortho(0.0f, float(GetWidth()), float(GetHeight()), 0.0f, -1.0f, 1.0f);
-}
-
-bool Window::Start(WindowProperties properties) {
+bool Window::StartGraphics() {
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
@@ -74,8 +58,6 @@ bool Window::Start(WindowProperties properties) {
     }
 
     SDL_GL_SetSwapInterval(0);
-
-    this->properties = properties;
 
     return true;
 }
