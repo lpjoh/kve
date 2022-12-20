@@ -2,14 +2,15 @@
 #include "Engine.h"
 #include "SpriteBatch.h"
 #include "Texture.h"
+#include "TileMap.h"
 
 namespace kve {
 	class TestEngine : public Engine {
 	private:
+		Texture texture;
 		SpriteBatch spriteBatch;
 
-		Texture texture1, texture2;
-		int textureID1, textureID2;
+		TileMap tileMap;
 
 	public:
 		WindowProperties GetWindowProperties() override;

@@ -3,14 +3,33 @@
 
 namespace kve {
 	class Texture {
-#ifdef KVE_GL
 	private:
+#ifdef KVE_DEBUG
+		std::string imagePath;
+#endif
+
+#ifdef KVE_GL
 		unsigned int glTexture;
 #endif
-	public:
-		void Bind();
-		bool Load(std::string imagePath);
 
-		void Start();
+		int width = 0, height = 0;
+
+		bool LoadImage(const std::string imagePath);
+
+	public:
+#ifdef KVE_DEBUG
+		std::string GetImagePath();
+#endif
+
+		int hFrames = 1, vFrames = 1;
+
+		int GetWidth();
+		int GetHeight();
+
+		void Bind();
+		bool Load(const std::string imagePath);
+
+		Texture();
+		~Texture();
 	};
 }

@@ -1,5 +1,7 @@
 #include "TestEngine.h"
 #include <glm/gtc/matrix_transform.hpp>
+#include "Assets.h"
+#include "TileMap.h"
 
 using namespace kve;
 
@@ -10,43 +12,23 @@ WindowProperties TestEngine::GetWindowProperties() {
 bool TestEngine::GameStart() {
 	renderer.backgroundColor = { 0.0f, 0.0f, 0.5f, 1.0f };
 
-	texture1.Start();
-	texture1.Load("assets/textures/test1.png");
-
-	texture2.Start();
-	texture2.Load("assets/textures/test2.png");
-
 	SpriteBatch::StartStatic();
 	spriteBatch.Start();
 
-	textureID1 = spriteBatch.AddTexture(&texture1);
-	textureID2 = spriteBatch.AddTexture(&texture2);
+	Texture* texture1 = Assets::LoadTexture("assets/textures/test.png");
+	Texture* texture2 = Assets::LoadTexture("assets/textures/test2.png");
+	Texture* texture3 = Assets::LoadTexture("assets/textures/test3.png");
+
+	spriteBatch.AddTexture(texture1);
+	spriteBatch.AddTexture(texture2);
+	spriteBatch.AddTexture(texture3);
+
+	tileMap.LoadTMX("assets/maps/test.tmx");
 	
 	return true;
 }
 
 void TestEngine::GameRender() {
-	static float time = 0.0f;
-
-	const glm::vec2 spriteSize = glm::vec2(32.0f, 32.0f) * 2.0f;
-
-	spriteBatch.DrawSprite(textureID1,
-		{ time, time }, spriteSize,
-		{ 0.0f, 0.0f }, { 1.0f, 1.0f });
-
-	spriteBatch.DrawSprite(textureID2,
-		{ -time, time }, spriteSize,
-		{ 0.0f, 0.0f }, { 1.0f, 1.0f });
-
-	spriteBatch.DrawSprite(textureID1,
-		{ -time, -time }, spriteSize,
-		{ 0.0f, 0.0f }, { 1.0f, 1.0f });
-
-	spriteBatch.DrawSprite(textureID2,
-		{ time, -time }, spriteSize,
-		{ 0.0f, 0.0f }, { 1.0f, 1.0f });
-	
+	tileMap.Render(spriteBatch);
 	spriteBatch.Render(window.GetOrthoTransform());
-
-	time += 0.1f;
 }

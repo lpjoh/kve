@@ -2,29 +2,21 @@
 
 #include "Shader.h"
 #include <iostream>
-#include <fstream>
 #include <GL/glew.h>
 #include "GL.h"
+#include "IO.h"
 
 using namespace kve;
 
-bool Shader::Compile(std::string sourcePath, unsigned short shaderType) {
-	std::string shaderSource;
-	std::ifstream shaderFile(sourcePath);
+bool Shader::Compile(const std::string sourcePath, unsigned short shaderType) {
+	std::optional<std::string> shaderSourceLoad = IO::LoadFileString(sourcePath);
 
-	if (shaderFile.is_open()) {
-		std::string line;
-
-		while (std::getline(shaderFile, line)) {
-			shaderSource += line + "\n";
-		}
-
-		shaderFile.close();
-	}
-	else {
+	if (shaderSourceLoad == std::nullopt) {
 		std::cerr << "Failed to load shader at \"" << sourcePath << "\"." << std::endl;
 		return false;
 	}
+
+	std::string shaderSource = shaderSourceLoad.value();
 
 	glShader = glCreateShader(shaderType);
 
@@ -49,11 +41,11 @@ Shader::~Shader() {
 	glDeleteShader(glShader);
 }
 
-VertexShader::VertexShader(std::string sourcePath) {
+VertexShader::VertexShader(const std::string sourcePath) {
 	Compile(sourcePath, GL_VERTEX_SHADER);
 }
 
-FragmentShader::FragmentShader(std::string sourcePath) {
+FragmentShader::FragmentShader(const std::string sourcePath) {
 	Compile(sourcePath, GL_FRAGMENT_SHADER);
 }
 

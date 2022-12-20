@@ -7,14 +7,10 @@
 
 using namespace kve;
 
-void kve::Texture::Bind() {
-	glBindTexture(GL_TEXTURE_2D, glTexture);
-}
+bool Texture::LoadImage(const std::string imagePath) {
+	SDL_Surface* imageSurface = IMG_Load(imagePath.c_str());
 
-bool Texture::Load(std::string imagePath) {
-	SDL_Surface* imgSurface = IMG_Load(imagePath.c_str());
-
-	if (imgSurface == nullptr) {
+	if (imageSurface == nullptr) {
 		std::cerr << "Failed to load texture at \"" << imagePath << "\"." << std::endl;
 		return false;
 	}
@@ -26,12 +22,25 @@ bool Texture::Load(std::string imagePath) {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-	glTexImage2D(GL_TEXTURE_2D, 0, 3, imgSurface->w, imgSurface->h, 0, GL_RGB, GL_UNSIGNED_BYTE, imgSurface->pixels);
+	width = imageSurface->w;
+	height = imageSurface->h;
+
+	glTexImage2D(GL_TEXTURE_2D, 0, 3, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, imageSurface->pixels);
 	glGenerateMipmap(GL_TEXTURE_2D);
+
+	SDL_FreeSurface(imageSurface);
 }
 
-void Texture::Start() {
+void kve::Texture::Bind() {
+	glBindTexture(GL_TEXTURE_2D, glTexture);
+}
+
+Texture::Texture() {
 	glGenTextures(1, &glTexture);
+}
+
+Texture::~Texture() {
+	glDeleteTextures(1, &glTexture);
 }
 
 #endif

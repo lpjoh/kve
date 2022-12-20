@@ -8,7 +8,7 @@ namespace kve {
 		unsigned int glShader;
 
 	protected:
-		bool Compile(std::string sourcePath, unsigned short shaderType);
+		bool Compile(const std::string sourcePath, unsigned short shaderType);
 #endif
 	private:
 		friend class ShaderProgram;
@@ -19,11 +19,11 @@ namespace kve {
 
 	class VertexShader : public Shader {
 	public:
-		VertexShader(std::string sourcePath);
+		VertexShader(const std::string sourcePath);
 	};
 
 	class FragmentShader : public Shader {
 	public:
-		FragmentShader(std::string sourcePath);
+		FragmentShader(const std::string sourcePath);
 	};
 }

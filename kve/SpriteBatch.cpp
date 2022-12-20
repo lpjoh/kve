@@ -1,22 +1,33 @@
 #include "SpriteBatch.h"
 
+#ifdef KVE_DEBUG
+#include <iostream>
+#endif
+
 using namespace kve;
 
 ShaderProgram SpriteBatch::shaderProgram;
 
-int SpriteBatch::AddTexture(Texture* texture) {
-	textures.push_back(texture);
-	batchedSprites.push_back(std::vector<BatchedSprite>());
-
-	return textures.size() - 1;
+void SpriteBatch::AddTexture(Texture* texture) {
+	batchedSprites.emplace(texture, std::vector<BatchedSprite>());
 }
 
-void SpriteBatch::DrawSprite(int textureIndex,
+void SpriteBatch::DrawSprite(Texture* texture,
 	glm::vec2 position, glm::vec2 size,
 	glm::vec2 srcPosition, glm::vec2 srcSize) {
 	
-	batchedSprites[textureIndex].push_back(
-		{ textureIndex, position, size, srcPosition, srcSize });
+#ifdef KVE_DEBUG
+	if (batchedSprites.find(texture) == batchedSprites.end()) {
+		std::cerr << 
+			"Sprite drawn with texture at \"" <<
+			texture->GetImagePath() <<
+			"\", which was not added to the batch." << std::endl;
+		exit(-1);
+	}
+#endif
+
+	batchedSprites.at(texture).push_back(
+		{ position, size, srcPosition, srcSize });
 }
 
 void SpriteBatch::Start() {
@@ -39,16 +50,20 @@ void SpriteBatch::Render(glm::mat4 transform) {
 	auto& indices = mesh.indexBuffer.indices;
 	auto& vertices = mesh.vertexBuffer.vertices;
 
-	for (int textureID = 0; textureID < batchedSprites.size(); textureID++) {
-		std::vector<BatchedSprite>& bsList = batchedSprites[textureID];
+	for (auto& textureBatchPair : batchedSprites) {
+		// A texture and its corresponding sprites
+		Texture* texture = textureBatchPair.first;
+		std::vector<BatchedSprite>& batchedSpriteList = batchedSprites.at(texture);
 		
-		for (BatchedSprite& bs : bsList) {
-			glm::vec2 start = bs.position;
-			glm::vec2 end = start + bs.size;
+		for (BatchedSprite& batchedSprite : batchedSpriteList) {
+			// Find points
+			glm::vec2 start = batchedSprite.position;
+			glm::vec2 end = start + batchedSprite.size;
 
-			glm::vec2 srcStart = bs.srcPosition;
-			glm::vec2 srcEnd = srcStart + bs.srcSize;
+			glm::vec2 srcStart = batchedSprite.srcPosition;
+			glm::vec2 srcEnd = srcStart + batchedSprite.srcSize;
 
+			// Create vertices
 			float depth = 0.0f;
 
 			vertices.push_back({
@@ -67,6 +82,7 @@ void SpriteBatch::Render(glm::mat4 transform) {
 				{ end.x, end.y, depth },
 				{ srcEnd.x, srcEnd.y } });
 
+			// Create indices
 			int first_index = vertices.size() - 4;
 
 			indices.push_back(
@@ -74,13 +90,13 @@ void SpriteBatch::Render(glm::mat4 transform) {
 
 			indices.push_back(
 				{ first_index + 1, first_index + 2, first_index + 3 });
-
-			mesh.Load();
-			mesh.Render(&shaderProgram, textures[textureID], transform);
-
-			mesh.Clear();
 		}
 
-		bsList.clear();
+		// Render and reset
+		mesh.Load();
+		mesh.Render(&shaderProgram, texture, transform);
+		mesh.Clear();
+
+		batchedSpriteList.clear();
 	}
 }

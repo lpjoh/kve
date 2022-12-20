@@ -20,6 +20,6 @@ namespace kve {
 		void Start();
 		~Mesh();
 
-		void Render(ShaderProgram* shaderProgram, Texture* texture, glm::mat4 transform = glm::mat4(1));
+		void Render(ShaderProgram* shaderProgram, Texture* texture, glm::mat4 transform = glm::mat4(1.0f));
 	};
 }

@@ -3,7 +3,7 @@
 int main() {
 	kve::TestEngine engine{};
 	
-	if (engine.Start()) {
+	if (!engine.Start()) {
 		return -1;
 	}
 
