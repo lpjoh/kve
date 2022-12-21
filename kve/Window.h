@@ -9,7 +9,7 @@
 
 namespace kve {
 	struct WindowProperties {
-		int width = 640, height = 480;
+		glm::ivec2 size = { 640, 480 };
 		std::string title = "KVE Window";
 		bool resizeable = false;
 
@@ -36,8 +36,8 @@ namespace kve {
 
 		void UpdateFrameTransform();
 
-		void Resize(int width, int height);
-		void GraphicsResize(int width, int height);
+		void Resize(glm::ivec2 size);
+		void GraphicsResize(glm::ivec2 size);
 
 		bool StartGraphics();
 

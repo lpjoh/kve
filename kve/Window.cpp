@@ -5,12 +5,12 @@
 using namespace kve;
 
 void Window::UpdateFrameTransform() {
-	float windowAspectRatio = (float)properties.width / (float)properties.height;
+	float windowAspectRatio = (float)properties.size.x / (float)properties.size.y;
 
 	RendererProperties rendererProperties = engine->renderer.GetProperties();
 
-	float frameAspectRatio = 
-		(float)rendererProperties.frameWidth / (float)rendererProperties.frameHeight;
+	glm::vec2 frameSize = glm::vec2(rendererProperties.frameSize);
+	float frameAspectRatio = frameSize.x / frameSize.y;
 
 	if (windowAspectRatio > frameAspectRatio) {
 		float aspectRatio = frameAspectRatio / windowAspectRatio;
@@ -26,11 +26,10 @@ void Window::UpdateFrameTransform() {
 	}
 }
 
-void Window::Resize(int width, int height) {
-    properties.width = width;
-    properties.height = height;
+void Window::Resize(glm::ivec2 size) {
+    properties.size = size;
 
-    GraphicsResize(width, height);
+    GraphicsResize(size);
 	UpdateFrameTransform();
 }
 
@@ -53,5 +52,5 @@ bool Window::Start(WindowProperties properties) {
 }
 
 void Window::PreRender() {
-    GraphicsResize(properties.width, properties.height);
+    GraphicsResize(properties.size);
 }

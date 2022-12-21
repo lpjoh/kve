@@ -40,13 +40,13 @@ bool TileSet::LoadTSX(const std::string filePath) {
 
 	int tileWidth = std::stoi(tileSetNode->first_attribute("tilewidth")->value());
 	int tileHeight = std::stoi(tileSetNode->first_attribute("tileheight")->value());
+	glm::ivec2 tileSize = { tileWidth, tileHeight };
 
-	texture->hFrames = texture->GetWidth() / tileWidth;
-	texture->vFrames = texture->GetHeight() / tileHeight;
+	texture->frameCounts = texture->GetSize() / tileSize;
 
 	// Set sprite properties
 	sprite.SetTexture(texture);
-	sprite.size = glm::vec2((float)tileWidth, (float)tileHeight);
+	sprite.size = glm::vec2(tileSize);
 
 	return true;
 }
@@ -55,12 +55,8 @@ TileSet::TileSet(int firstGlobalID) {
 	this->firstGlobalID = firstGlobalID;
 }
 
-int TileLayer::GetWidth() {
-	return size.x;
-}
-
-int TileLayer::GetHeight() {
-	return size.y;
+glm::ivec2 TileLayer::GetSize() {
+	return size;
 }
 
 int TileLayer::GetCell(int x, int y) {
@@ -175,11 +171,10 @@ bool TileMap::LoadTMX(const std::string filePath) {
 
 void TileMap::Render(SpriteBatch& spriteBatch) {
 	for (TileLayer& layer : tileLayers) {
-		int width = layer.GetWidth();
-		int height = layer.GetHeight();
+		glm::ivec2 layerSize = layer.GetSize();
 
-		for (int y = 0; y < height; y++) {
-			for (int x = 0; x < width; x++) {
+		for (int y = 0; y < layerSize.y; y++) {
+			for (int x = 0; x < layerSize.x; x++) {
 				int cell = layer.GetCell(x, y);
 
 				if (cell == 0) {

@@ -2,13 +2,14 @@
 
 using namespace kve;
 
-void Mesh::CreateQuad(glm::vec3 start, glm::vec3 end, glm::vec2 srcStart, glm::vec2 srcEnd) {
+void Mesh::CreateQuad(
+	glm::vec2 start, glm::vec2 end, float depth,
+	glm::vec2 srcStart, glm::vec2 srcEnd) {
+
 	auto& indices = indexBuffer.indices;
 	auto& vertices = vertexBuffer.vertices;
 	
 	// Create vertices
-	float depth = 0.0f;
-
 	vertices.push_back({
 		{ start.x, start.y, depth },
 		{ srcStart.x, srcStart.y } });

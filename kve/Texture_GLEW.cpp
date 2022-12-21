@@ -25,30 +25,29 @@ bool Texture::Load(const std::string imagePath) {
 
 	Bind();
 
-	width = imageSurface->w;
-	height = imageSurface->h;
+	size.x = imageSurface->w;
+	size.y = imageSurface->h;
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, imageSurface->pixels);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, size.x, size.y, 0, GL_RGB, GL_UNSIGNED_BYTE, imageSurface->pixels);
 	glGenerateMipmap(GL_TEXTURE_2D);
 
 	SDL_FreeSurface(imageSurface);
 }
 
-void Texture::Create(int width, int height) {
+void Texture::Create(glm::ivec2 size) {
 	Bind();
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, size.x, size.y, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 
-	this->width = width;
-	this->height = height;
+	this->size = size;
 }
 
 void Texture::Start() {

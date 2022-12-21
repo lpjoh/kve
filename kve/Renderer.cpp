@@ -7,7 +7,7 @@ using namespace kve;
 void Renderer::UpdateViewTransform() {
 	viewTransform = 
 		glm::ortho(0.0f,
-			float(properties.frameWidth), float(properties.frameHeight),
+			float(properties.frameSize.x), float(properties.frameSize.y),
 			0.0f, -1.0f, 1.0f);
 }
 
@@ -26,12 +26,12 @@ bool Renderer::Start(RendererProperties properties) {
 		return false;
 	}
 
-	frameBuffer.Start(properties.frameWidth, properties.frameHeight);
+	frameBuffer.Start(properties.frameSize);
 	
 	frameMesh.Start();
 
 	frameMesh.CreateQuad(
-		glm::vec3(-1.0f, -1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 0.0f),
+		glm::vec2(-1.0f, -1.0f), glm::vec2(1.0f, 1.0f), 0.0f,
 		glm::vec2(0.0f, 0.0f), glm::vec2(1.0f, 1.0f));
 
 	frameMesh.Load();

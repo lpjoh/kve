@@ -9,9 +9,7 @@ Texture* Sprite::GetTexture() {
 void Sprite::SetTexture(Texture* texture) {
 	this->texture = texture;
 
-	srcSize = glm::vec2(1.0f) / glm::vec2(
-		(float)texture->hFrames,
-		(float)texture->vFrames);
+	srcSize = glm::vec2(1.0f) / glm::vec2(texture->frameCounts);
 
 	SetFrame(0);
 }
@@ -24,8 +22,8 @@ void Sprite::SetFrame(int frame) {
 	this->frame = frame;
 
 	srcPosition = glm::vec2(
-		frame % texture->hFrames,
-		frame / texture->hFrames) * srcSize;
+		frame % texture->frameCounts.x,
+		frame / texture->frameCounts.x) * srcSize;
 }
 
 void Sprite::Render(SpriteBatch& spriteBatch) {

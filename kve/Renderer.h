@@ -5,7 +5,7 @@
 
 namespace kve {
 	struct RendererProperties {
-		int frameWidth = 640, frameHeight = 480;
+		glm::ivec2 frameSize = { 640, 480 };
 	};
 
 	class Engine;

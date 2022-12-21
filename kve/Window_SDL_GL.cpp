@@ -7,8 +7,8 @@
 
 using namespace kve;
 
-void Window::GraphicsResize(int width, int height) {
-    glViewport(0, 0, width, height);
+void Window::GraphicsResize(glm::ivec2 size) {
+    glViewport(0, 0, size.x, size.y);
 }
 
 void Window::Sleep() {
@@ -48,7 +48,7 @@ bool Window::StartGraphics() {
         properties.title.c_str(),
         SDL_WINDOWPOS_CENTERED,
         SDL_WINDOWPOS_CENTERED,
-        properties.width, properties.height, sdlWindowFlags);
+        properties.size.x, properties.size.y, sdlWindowFlags);
 
     sdlGlContext = SDL_GL_CreateContext(sdlWindow);
 
@@ -81,7 +81,7 @@ bool Window::Update() {
 
         case SDL_WINDOWEVENT:
             if (event.window.event == SDL_WINDOWEVENT_RESIZED) {
-                Resize(event.window.data1, event.window.data2);
+                Resize(glm::ivec2(event.window.data1, event.window.data2));
             }
 
             break;

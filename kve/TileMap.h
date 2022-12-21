@@ -19,8 +19,7 @@ namespace kve {
 		std::vector<int> cells;
 
 	public:
-		int GetWidth();
-		int GetHeight();
+		glm::ivec2 GetSize();
 
 		int GetCell(int x, int y);
 

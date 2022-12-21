@@ -1,12 +1,13 @@
 #pragma once
 #include "Texture.h"
+#include <glm/glm.hpp>
 
 namespace kve {
 	class FrameBuffer {
 #ifdef KVE_GL
 	private:
 		unsigned int glFrameBuffer, glRenderBuffer;
-		int width, height;
+		glm::ivec2 size;
 #endif
 	private:
 		Texture texture;
@@ -19,7 +20,7 @@ namespace kve {
 		void Bind();
 		static void Unbind();
 
-		void Start(int width, int height);
+		void Start(glm::ivec2 size);
 		~FrameBuffer();
 
 		void PreRender();

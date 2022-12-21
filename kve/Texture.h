@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <glm/glm.hpp>
 
 namespace kve {
 	class Texture {
@@ -8,21 +9,20 @@ namespace kve {
 		unsigned int glTexture;
 #endif
 	private:
-		int width = 0, height = 0;
+		glm::ivec2 size = { 0, 0 };
 
 		friend class FrameBuffer;
 
 	public:
-		int hFrames = 1, vFrames = 1;
+		glm::ivec2 frameCounts = { 1, 1 };
 
-		int GetWidth();
-		int GetHeight();
+		glm::ivec2 GetSize();
 
 		void Bind();
 		static void Unbind();
 
 		bool Load(const std::string imagePath);
-		void Create(int width, int height);
+		void Create(glm::ivec2 size);
 
 		void Start();
 		~Texture();

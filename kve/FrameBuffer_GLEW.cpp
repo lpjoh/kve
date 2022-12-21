@@ -7,7 +7,7 @@
 using namespace kve;
 
 void FrameBuffer::PreRenderGraphics() {
-	glViewport(0, 0, width, height);
+	glViewport(0, 0, size.x, size.y);
 }
 
 void FrameBuffer::Bind() {
@@ -20,25 +20,24 @@ void FrameBuffer::Unbind() {
 	glBindRenderbuffer(GL_RENDERBUFFER, 0);
 }
 
-void FrameBuffer::Start(int width, int height) {
+void FrameBuffer::Start(glm::ivec2 size) {
 	glGenFramebuffers(1, &glFrameBuffer);
 	glGenRenderbuffers(1, &glRenderBuffer);
 	
 	Bind();
 
 	texture.Start();
-	texture.Create(width, height);
+	texture.Create(size);
 
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture.glTexture, 0);
 
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, size.x, size.y);
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, glRenderBuffer);
 
 	FrameBuffer::Unbind();
 	Texture::Unbind();
 
-	this->width = width;
-	this->height = height;
+	this->size = size;
 }
 
 FrameBuffer::~FrameBuffer() {

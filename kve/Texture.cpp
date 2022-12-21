@@ -2,10 +2,6 @@
 
 using namespace kve;
 
-int Texture::GetWidth() {
-	return width;
-}
-
-int Texture::GetHeight() {
-	return height;
+glm::ivec2 Texture::GetSize() {
+	return size;
 }

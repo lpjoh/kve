@@ -6,11 +6,12 @@
 using namespace kve;
 
 WindowProperties TestEngine::GetWindowProperties() {
-	return { 640, 480, "Test engine", true, 60.0f };
+	return { { 640, 480 } , "Test engine", true, 60.0f
+};
 }
 
 RendererProperties TestEngine::GetRendererProperties() {
-	return { 320, 180 };
+	return { { 320, 180 } };
 }
 
 bool TestEngine::GameStart() {

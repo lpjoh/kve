@@ -52,7 +52,9 @@ void SpriteBatch::Render(glm::mat4 transform) {
 
 			float depth = 0.0f;
 
-			mesh.CreateQuad(glm::vec3(start, depth), glm::vec3(end, depth), srcStart, srcEnd);
+			mesh.CreateQuad(
+				start, end, 0.0f,
+				srcStart, srcEnd);
 		}
 
 		// Render and reset

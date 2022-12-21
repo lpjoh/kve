@@ -14,7 +14,9 @@ namespace kve {
 		VertexBuffer vertexBuffer;
 		IndexBuffer indexBuffer;
 
-		void CreateQuad(glm::vec3 start, glm::vec3 end, glm::vec2 srcStart, glm::vec2 srcEnd);
+		void CreateQuad(
+			glm::vec2 start, glm::vec2 end, float depth,
+			glm::vec2 srcStart, glm::vec2 srcEnd);
 
 		void Load();
 		void Clear();
