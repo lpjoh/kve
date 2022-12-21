@@ -34,6 +34,11 @@ void FrameBuffer::Start(glm::ivec2 size) {
 	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, size.x, size.y);
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, glRenderBuffer);
 
+	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
+		std::cerr << "Failed to create framebuffer." << std::endl;
+	}
+
+
 	FrameBuffer::Unbind();
 	Texture::Unbind();
 
