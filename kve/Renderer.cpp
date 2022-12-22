@@ -8,7 +8,7 @@ void Renderer::UpdateViewTransform() {
 	viewTransform = 
 		glm::ortho(0.0f,
 			float(properties.frameSize.x), float(properties.frameSize.y),
-			0.0f, -1.0f, 1.0f);
+			0.0f, 0.0f, 1.0f);
 }
 
 RendererProperties Renderer::GetProperties() {
