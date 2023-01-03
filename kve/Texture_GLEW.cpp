@@ -1,9 +1,10 @@
 #ifdef KVE_GL
 
+#define STB_IMAGE_IMPLEMENTATION
 #include "Texture.h"
 #include <iostream>
 #include <GL/glew.h>
-#include <SDL2/SDL_image.h>
+#include <stb_image.h>
 
 using namespace kve;
 
@@ -16,27 +17,25 @@ void Texture::Unbind() {
 }
 
 bool Texture::Load(const std::string imagePath) {
-	SDL_Surface* imageSurface = IMG_Load(imagePath.c_str());
+	int channels;
+	unsigned char* data = stbi_load(imagePath.c_str(), &size.x, &size.y, &channels, 0);
 
-	if (imageSurface == nullptr) {
+	if (data == nullptr) {
 		std::cerr << "Failed to load texture at \"" << imagePath << "\"." << std::endl;
 		return false;
 	}
 
 	Bind();
 
-	size.x = imageSurface->w;
-	size.y = imageSurface->h;
-
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, size.x, size.y, 0, GL_RGB, GL_UNSIGNED_BYTE, imageSurface->pixels);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, size.x, size.y, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 	glGenerateMipmap(GL_TEXTURE_2D);
 
-	SDL_FreeSurface(imageSurface);
+	stbi_image_free(data);
 }
 
 void Texture::Create(glm::ivec2 size) {
