@@ -27,8 +27,6 @@ namespace kve {
 		friend class Engine;
 
 	public:
-		glm::vec4 backgroundColor;
-
 		RendererProperties GetProperties();
 
 		void Clear(glm::vec4 color);

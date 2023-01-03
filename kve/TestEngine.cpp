@@ -14,8 +14,6 @@ RendererProperties TestEngine::GetRendererProperties() {
 }
 
 bool TestEngine::GameStart() {
-	renderer.backgroundColor = { 0.0f, 0.0f, 0.5f, 1.0f };
-
 	SpriteBatch::StartStatic();
 	spriteBatch.Start();
 
@@ -31,6 +29,8 @@ bool TestEngine::GameUpdate(float delta) {
 }
 
 void TestEngine::GameRender() {
+	renderer.Clear({ 0.0f, 0.0f, 0.5f, 1.0f });
+
 	tileMap.Render(spriteBatch);
 	spriteBatch.Render(renderer.GetViewTransform());
 }

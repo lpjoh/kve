@@ -55,7 +55,6 @@ void Renderer::Render() {
 	// Draw game to framebuffer
 	frameBuffer.PreRender();
 
-	Clear(backgroundColor);
 	engine->GameRender();
 
 	// Draw framebuffer to screen
